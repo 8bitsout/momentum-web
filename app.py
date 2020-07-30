@@ -3,15 +3,16 @@ import yfinance as yf
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from flask import Flask
+from typing import NamedTuple, List
 
 app = Flask(__name__)
 
 
 @app.route('/api/momentum/tickers/<index>')
-def momentum_tickers(index):
+def momentum_tickers(index: list):
     top, bottom = fetch_momentum_stocks(index)
     print(top)
-    return {"top": top}
+    return {"best": top, "worst": bottom}
 
 
 def fetch_momentum_stocks(index, start_date=datetime.today(), lookback_period=6):
@@ -38,6 +39,8 @@ def fetch_momentum_stocks(index, start_date=datetime.today(), lookback_period=6)
 
     return top, bottom
 
+
+# def fetch_returns_since_inception()
 
 if __name__ == '__main__':
     app.run()
